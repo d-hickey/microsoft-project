@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+		<!--<link href='http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css' rel='stylesheet' type='text/css'/>
+		<script src='http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js' type='text/javascript'></script>-->
+		<link href="google-code-prettify/src/prettify.css" rel="stylesheet" type="text/css" />
+		<script src="google-code-prettify/src/prettify.js"></script>
+		<script src="google-code-prettify/src/run_prettify.js"></script>
+        <link rel="stylesheet" type="text/css" href="program.css" />
+		<script src="https://appsforoffice.microsoft.com/lib/1.0/hosted/office.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
+        <script src="program.js"></script>
+		
+		<!--<script>
+		$('prettyprint').bind("DOMSubtreeModified", function() {
+			document.getElementById("test").innerText = "yohoho";
+		});
+		</script>-->
+    </head>
+    <body onload='prettyPrint()'>
+       <button onclick="writeData()"> Write Data </button></br>
+        <button onclick="ReadData()"> Read Selected Data </button></br>
+		<button onclick="runPrettyPrint()"> Pretty print when reading selected Data </button></br>
+        Results: <!--<div id="results"></div>-->
+		<div id="test"></div>
+		<br/>
+		<pre id="results" class="prettyprint"> no code yet :) </pre>
+		
+		<script>
+		function runPrettyPrint(){
+			PR.prettyPrint();
+		}
+		</script>
+    </body>
+</html>
