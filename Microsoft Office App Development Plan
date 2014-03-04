@@ -1,0 +1,17 @@
+Microsoft Office App Development Plan
+Our app will contain 2 main features:
+Syntax Highlighting
+Code Indentation
+
+Syntax Highlighting
+•	Done through Google Prettify API
+•	Our app should prettify the code that users have selected in their word doc
+•	The prettified code should first be output on the app
+•	Then the prettified code should be output back in the doc
+•	The prettify API only outputs HTML code
+•	Turning that HTML into coloured text code for the doc will involve looping through the html code from start to finish and using one of the Microsoft API functions to change that HTML to coloured text.
+
+Code Indentation
+Possibly done through an API (possibly http://tools.arantius.com/tabifier - http://static.arantius.com/inc/tabifier.js , or http://prettyprinter.de/index.php (but can’t indent HTML))
+
+
