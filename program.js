@@ -112,10 +112,9 @@ function ReadData() {
             printData(result.error.name + ":" + err.message);
         }
     });*/
-	document.getElementById("debug").outerHTML = "read code: "  + code;
+	
 	var formatted = parseCode(code);
-	document.getElementById("deb2").outerHTML = "Passed Formatting";
-	document.getElementById("results").outerHTML = "<pre id=\"results\" class=\"prettyprint\">" + formatted + "</pre>";
+	document.getElementById("results").outerHTML = "<code id=\"results\" class=\"prettyprint\"><pre>" + formatted + "</pre></code>";
 	Office.context.document.setSelectedDataAsync(formatted, { coercionType: 'text' });
 	PR.prettyPrint();
 }
