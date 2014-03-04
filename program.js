@@ -18,13 +18,13 @@ function test() {
 function ReadData() {
     Office.context.document.getSelectedDataAsync("text", function (result) {
         if (result.status === "succeeded"){
-			document.getElementById("results").innerText = result.value;
+			document.getElementById("results").outerHTML = "<code id=\"results\" class=\"prettyprint\">" + result.value + "</code>";
         }
 		/*
         else{
             printData(result.error.name + ":" + err.message);
         }*/
     });
-	prettyPrint();
+	PR.prettyPrint();
 }
 	  
