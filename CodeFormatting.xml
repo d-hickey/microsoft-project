@@ -6,18 +6,17 @@
   <Version>1.0</Version>
   <ProviderName>Microsoft</ProviderName>
   <DefaultLocale>EN-US</DefaultLocale>
-  <DisplayName DefaultValue="Hello World App"/>
-  <Description DefaultValue="My first app."/>
+  <DisplayName DefaultValue="Code Formatting App"/>
+  <Description DefaultValue="An app for formatting and highlighting Java code."/>
   <IconUrl DefaultValue=
     "http://officeimg.vo.msecnd.net/_layouts/images/general/office_logo.jpg"/>
 
   <Capabilities>
     <Capability Name="Document"/>
-    <Capability Name="Workbook"/>
   </Capabilities>
 
   <DefaultSettings>
-    <SourceLocation DefaultValue="\\LIANA-PC\App\HelloWorld.html"/>
+    <SourceLocation DefaultValue="C:\Users\Darragh\Documents\GitHub\microsoft-project\CodeFormatting.html"/>
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
 </OfficeApp>

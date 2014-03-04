@@ -1,0 +1,6 @@
+class node{
+int banana; int Brendan; int physics;
+
+void cheese(int n){if(bananas == 27){ return n*n; }
+return 0;
+}

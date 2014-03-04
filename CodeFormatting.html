@@ -20,14 +20,17 @@
 		</script>-->
     </head>
     <body onload='prettyPrint()'>
-       <button onclick="writeData()"> Write Data </button></br>
+		<textarea id="code" rows='5' cols='50'></textarea>
         <button onclick="ReadData()"> Read Selected Data </button></br>
 		<button onclick="prettyPrint()"> Pretty print when reading selected Data </button></br>
         Results: <!--<div id="results"></div>-->
 		<div id="test"></div>
 		<br/>
 		<code id="results" class="prettyprint"> no code yet  </code>
-		
+		</br></br>
+		Debug:</br>
+		<div id="debug"> </div>
+		<div id="deb2"> </div>
 		<script>
 		function runPrettyPrint(){
 			PR.prettyPrint();
