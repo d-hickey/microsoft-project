@@ -23,14 +23,20 @@ function parseCode(code) {
         if (infor === 0){
 			if (c === '}'){
 				indent = indent - 1;
+				if(newline === 1){
+					result = result + makeIndent(indent);
+					newline = 0;
+				}
+				result = result + c + '\n';
+				newline = 1;
 			}
-			if(newline === 1){
-				result = result + makeIndent(indent);
-				newline = 0;
+			else{
+				if(newline === 1){
+					result = result + makeIndent(indent);
+					newline = 0;
+				}
+				result = result + c;
 			}
-			
-			result = result + c;
-		
         
 			if (c === '{'){
 				indent = indent + 1;
@@ -48,22 +54,28 @@ function parseCode(code) {
 				newline = 1;
 			}
 			// this part doesn't seem to work too well atm
-			/*if (code.substring(pos, pos+3) == "for("){
-				infor = 1;
-			}*/
+			if (c === 'f'){
+				if(code.substring(pos+1, pos+4) === "or("){
+					//document.getElementById("fordebug").outerHTML = "infor gets set to one";
+					infor = 1;
+				}
+				else{
+					//document.getElementById("fordebug").outerHTML = "infor not set to 1, rest of string is: " + code.substring(pos+1, pos+5);
+				}
+			}
 			
 			
 		}
 		else{
 			result = result + c;
 			if(code.charAt(pos+1) === '{'){
+				//document.getElementById("fordebug").outerHTML = "infor gets set to one";
 				infor = 0;
 			}
 		}
   
         pos = pos + 1;
     }
-	//document.getElementById("debug").outerHTML = "finishes parse function";
     return result;
 }
 
@@ -114,8 +126,8 @@ function ReadData() {
     });*/
 	
 	var formatted = parseCode(code);
-	document.getElementById("results").outerHTML = "<code id=\"results\" class=\"prettyprint\"><pre>" + formatted + "</pre></code>";
-	Office.context.document.setSelectedDataAsync(formatted, { coercionType: 'text' });
+	document.getElementById("results").outerHTML = "<pre id=\"results\" class=\"prettyprint\"><pre>" + formatted + "</pre>";
+	Office.context.document.setSelectedDataAsync("<pre style=\"font-size:14px\">" + formatted + "</pre>", { coercionType: 'html' });
 	PR.prettyPrint();
 }
 	  
