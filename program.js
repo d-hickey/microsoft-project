@@ -127,7 +127,7 @@ function ReadData() {
 	
 	var formatted = parseCode(code);
 	document.getElementById("results").outerHTML = "<pre id=\"results\" class=\"prettyprint\"><pre>" + formatted + "</pre>";
-	Office.context.document.setSelectedDataAsync("<pre style=\"font-size:14px\">" + formatted + "</pre>", { coercionType: 'html' });
+	Office.context.document.setSelectedDataAsync("<link href=\"C:\Users\Darragh\Documents\GitHub\microsoft-project\google-code-prettify/src/prettify.css\" rel=\"stylesheet\" type=\"text/css\" /><script src=\"C:\Users\Darragh\Documents\GitHub\microsoft-project\google-code-prettify/src/prettify.js\"></script><pre style=\"font-size:14px\">" + formatted + "</pre><script src=\"C:\Users\Darragh\Documents\GitHub\microsoft-project\google-code-prettify/src/run_prettify.js\"></script>", { coercionType: 'html' });
 	PR.prettyPrint();
 }
 	  
