@@ -1,133 +1,216 @@
-// The initialize function is required for all apps.
-Office.initialize = function (reason) {
-    // Checks for the DOM to load using the jQuery ready function.
-    $(document).ready(function () {
-    // After the DOM is loaded, app-specific code can run.
-    // Add any initialization logic to this function.
-    });
-}
+//gogo global variable
+var level=0;
+var LOOP_SIZE=100;
+var tabstop;
 
-
-function parseCode(code) {
-	//document.getElementById("debug").outerHTML = "gets into function";
-    var result = "";
-    var pos = 0;
-    var c;
-    var indent = 0;
-	var newline = 0;
-	var infor = 0;
-    code = removeExtraSpaces(code);
+function runTabifier() {
+  var code = document.getElementById('code').value;
+  var type=document.getElementById('mydropdown');
+  type=type.options[type.selectedIndex].value;
 	
-    while(pos < code.length) {
-        c = code.charAt(pos);
-        if (infor === 0){
-			if (c === '}'){
-				indent = indent - 1;
-				if(newline === 1){
-					result = result + makeIndent(indent);
-					newline = 0;
-				}
-				result = result + c + '\n';
-				newline = 1;
-			}
-			else{
-				if(newline === 1){
-					result = result + makeIndent(indent);
-					newline = 0;
-				}
-				result = result + c;
-			}
-        
-			if (c === '{'){
-				indent = indent + 1;
-				while(code.charAt(pos+1) === ' '){
-					pos = pos + 1;
-				}
-				result = result + '\n';
-				newline = 1;
-			}
-			if (c === ';'){
-				while(code.charAt(pos+1) === ' '){
-					pos = pos + 1;
-				}
-				result = result + '\n';
-				newline = 1;
-			}
-			// this part doesn't seem to work too well atm
-			if (c === 'f'){
-				if(code.substring(pos+1, pos+4) === "or("){
-					//document.getElementById("fordebug").outerHTML = "infor gets set to one";
-					infor = 1;
-				}
-				else{
-					//document.getElementById("fordebug").outerHTML = "infor not set to 1, rest of string is: " + code.substring(pos+1, pos+5);
-				}
-			}
-			
-			
-		}
-		else{
-			result = result + c;
-			if(code.charAt(pos+1) === '{'){
-				//document.getElementById("fordebug").outerHTML = "infor gets set to one";
-				infor = 0;
-			}
-		}
-  
-        pos = pos + 1;
+  tabstop=document.getElementById('spacepicker');
+  tabstop=tabstop.options[tabstop.selectedIndex].value;
+
+  //console.log(tabstop+"ok");
+
+  if ('C'==type) code=cleanCStyle(code);
+  if ('Java'==type) code=cleanCStyle(code);
+  if ('Javascript'==type) code=cleanCStyle(code);
+  if ('C++'==type) code=cleanCStyle(code);
+  if ('Objective C'==type) code=cleanCStyle(code);
+  if ('C#'==type) code=cleanCStyle(code);
+  if ('PHP'==type) code=cleanCStyle(code);
+  if ('CSS'==type) code=cleanCSS(code);
+}
+
+function finishTabifier(code) {
+  code=code.replace(/\n\s*\n/g, '\n');  //blank lines
+  code=code.replace(/^[\s\n]*/, ''); //leading space
+  code=code.replace(/[\s\n]*$/, ''); //trailing space
+
+  document.getElementById("results").outerHTML = "<pre id=\"results\" class=\"prettyprint\"><pre>" + code + "</pre>";
+  PR.prettyPrint();
+  level=0;
+}
+
+function repeat(pattern, count) {
+    if (count < 1) return '';
+    var result = '';
+    while (count > 0) {
+        if (count & 1) result += pattern;
+        count >>= 1, pattern += pattern;
     }
     return result;
 }
+function tabs() {
+  var s='';
+  for (var j=0; j<level; j++) s+=repeat(' ', tabstop);
+  return s;
+}
 
-function removeExtraSpaces(code){
-    var result = "";
-    var seenSpace = 0;
-    var c;
-    for(var i = 0; i < code.length; i++){
-        c = code.charAt(i);
-        if(c !== '\n'){
-            if(c !== ' ' || seenSpace != 1){
-				seenSpace = 0;
-                result = result + c;
-                if(c === ' '){
-                    seenSpace = 1;
-                }
-            }
+function cleanCSS(code) {
+  var i=0, instring=false, incomment=false, c, cp;
+  function cleanAsync() {
+    var iStart=i;
+    for (; i<code.length && i<iStart+LOOP_SIZE; i++) {
+      c=code.charAt(i);
+      cp=null;
+      try {
+        cp=code.charAt(i+1);
+      } catch (e) { }
+
+      if (incomment) {
+        if ('*' == c && '/' == cp) {
+          incomment=false;
+          out+='*/';
+          i++;
+        } else {
+          out+=c;
         }
-    }
-    return result;
-}
-
-function makeIndent(ind) {
-    var space = "";
-    var i = 0;
-    while(i < ind){
-        space = space + "    ";
+      } else if (instring) {
+        if (instring==c) {
+          instring=false;
+        }
+        out+=c;
+      } else if ('/'==c && '*'==cp) {
+        incomment=true;
+        out+='/*';
         i++;
+      } else if ('{'==c) {
+        level++;
+        out+=' {\n'+tabs();
+      } else if ('}'==c) {
+        out=out.replace(/\s*$/, '');
+        level--;
+        out+='\n'+tabs()+'}\n'+tabs();
+      } else if ('"'==c || "'"==c) {
+        if (instring && c==instring) {
+          instring=false;
+        } else {
+          instring=c;
+        }
+        out+=c;
+      } else if (';'==c) {
+        out+=';\n'+tabs();
+      } else if ('\n'==c) {
+        out+='\n'+tabs();
+      } else {
+        out+=c;
+      }
     }
-    return space;
+
+    if (i<code.length) {
+      setTimeout(cleanAsync, 0);
+    } else {
+      level=li;
+      out=out.replace(/[\s\n]*$/, '');
+      finishTabifier(out);
+    }
+  }
+
+  if ('\n'==code[0]) code=code.substr(1);
+  code=code.replace(/([^\/])?\n*/g, '$1');
+  code=code.replace(/\n\s+/g, '\n');
+  code=code.replace(/[   ]+/g, ' ');
+  code=code.replace(/\s?([;:{},+>])\s?/g, '$1');
+  code=code.replace(/\{(.*):(.*)\}/g, '{$1: $2}');
+
+  var out=tabs(), li=level;
+  cleanAsync();
+  return out;
 }
 
-function test() {
-	document.getElementById("test").innerText = "yohoho: "+document.getElementById("results").innerText;
-}
 
-function ReadData() {
-	var code = document.getElementById('code').value;
-	
-   /* parseCode(code, function (result) {
-        if (result.status === "succeeded"){
-			document.getElementById("results").outerHTML = "<code id=\"results\" class=\"prettyprint\">" + result.value + "</code>";
-			Office.context.document.setSelectedDataAsync(result.value, { coercionType: 'text' });
+
+
+function cleanCStyle(code) {
+  var i=0;
+  function cleanAsync() {
+    var iStart=i;
+    for (; i<code.length && i<iStart+LOOP_SIZE; i++) {
+      c=code.charAt(i);
+
+      if (incomment) {
+        if ('//'==incomment && '\n'==c) {
+          incomment=false;
+        } else if ('/*'==incomment && '*/'==code.substr(i, 2)) {
+          incomment=false;
+          c='*/\n';
+          i++;
         }
-        else{
-            printData(result.error.name + ":" + err.message);
+        if (!incomment) {
+          while (code.charAt(++i).match(/\s/)) ;; i--;
+          c+=tabs();
         }
-    });*/
-	
-	var formatted = parseCode(code);
-	document.getElementById("results").outerHTML = "<pre id=\"results\" class=\"prettyprint\"><pre>" + formatted + "</pre>";
-	Office.context.document.setSelectedDataAsync("<link href=\"C:\Users\Darragh\Documents\GitHub\microsoft-project\google-code-prettify/src/prettify.css\" rel=\"stylesheet\" type=\"text/css\" /><script src=\"C:\Users\Darragh\Documents\GitHub\microsoft-project\google-code-prettify/src/prettify.js\"></script><pre style=\"font-size:14px\">" + formatted + "</pre><script src=\"C:\Users\Darragh\Documents\GitHub\microsoft-project\google-code-prettify/src/run_prettify.js\"></script>", { coercionType: 'html' });
-	PR.prettyPrint();
+        out+=c;
+      } else if (instring) {
+        if (instring==c && // this string closes at the next matching quote
+          // unless it was escaped, or the escape is escaped
+          ('\\'!=code.charAt(i-1) || '\\'==code.charAt(i-2))
+        ) {
+          instring=false;
+        }
+        out+=c;
+      } else if (infor && '('==c) {
+        infor++;
+        out+=c;
+      } else if (infor && ')'==c) {
+        infor--;
+        out+=c;
+      } else if ('else'==code.substr(i, 4)) {
+        out=out.replace(/\s*$/, '')+' e';
+      } else if (code.substr(i).match(/^for\s*\(/)) {
+        infor=1;
+        out+='for (';
+        while ('('!=code.charAt(++i)) ;;
+      } else if ('//'==code.substr(i, 2)) {
+        incomment='//';
+        out+='//';
+        i++;
+      } else if ('/*'==code.substr(i, 2)) {
+        incomment='/*';
+        out+='\n'+tabs()+'/*';
+        i++;
+      } else if ('"'==c || "'"==c) {
+        if (instring && c==instring) {
+          instring=false;
+        } else {
+          instring=c;
+        }
+        out+=c;
+      } else if ('{'==c) {
+        level++;
+        out=out.replace(/\s*$/, '')+' {\n'+tabs();
+        while (code.charAt(++i).match(/\s/)) ;; i--;
+      } else if ('}'==c) {
+        out=out.replace(/\s*$/, '');
+        level--;
+        out+='\n'+tabs()+'}\n'+tabs();
+        while (code.charAt(++i).match(/\s/)) ;; i--;
+      } else if (';'==c && !infor) {
+        out+=';\n'+tabs();
+        while (code.charAt(++i).match(/\s/)) ;; i--;
+      } else if ('\n'==c) {
+        out+='\n'+tabs();
+      } else {
+        out+=c;
+      }
+    }
+
+    if (i<code.length) {
+      setTimeout(cleanAsync, 0);
+    } else {
+      level=li;
+      out=out.replace(/[\s\n]*$/, '');
+      finishTabifier(out);
+    }
+  }
+
+  code=code.replace(/^[\s\n]*/, ''); //leading space
+  code=code.replace(/[\s\n]*$/, ''); //trailing space
+  code=code.replace(/[\n\r]+/g, '\n'); //collapse newlines
+
+  var out=tabs(), li=level, c='';
+  var infor=false, forcount=0, instring=false, incomment=false;
+  cleanAsync();
 }
-	  

@@ -16,29 +16,32 @@
     </head>
     <body onload='prettyPrint()'>
 		<textarea id="code" rows='5' cols='50'></textarea>
-        <button onclick="ReadData()"> Read Selected Data </button></br>
+        <button onclick="runTabifier()"> Read Selected Data </button></br>
+		<!--<button onclick="prettyPrint()"> Pretty print when reading selected Data </button></br>-->
         Select Programming Language: 
-        <select name="mydropdown">
+        <select name="mydropdown" id="mydropdown">
             <option value="C">C</option>
             <option value="C++">C++</option>
-            <option value="Java">Objective C</option>
+            <option value="Objective C">Objective C</option>
+			<option value="C#">C#</option>
             <option value="Java">Java</option>
-            <option value="Java">javascript</option>
+            <option value="Javascript">Javascript</option>
+			<option value="PHP">PHP</option>
+			<option value="CSS">CSS</option>
            
         </select>
         
         <br>Select Indentation:
-        <select name="mydropdown">
-            <option value="">1</option>
-            <option value="">2</option>
-            <option value="">3</option>
-            <option value="">4</option>
-            <option value="">5</option>
-            
+        <select name="spacepicker" id="spacepicker">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
         </select>
         <br>Results:</br>
 		
-		<code id="results" class="prettyprint"> no code yet  </code>
+		<pre id="results" class="prettyprint"> no code yet  </pre>
 		</br></br>
 
     </body>
