@@ -17,7 +17,6 @@ function runTabifier() {
   if ('Java'==type) code=cleanCStyle(code);
   if ('Javascript'==type) code=cleanCStyle(code);
   if ('C++'==type) code=cleanCStyle(code);
-  if ('Objective C'==type) code=cleanCStyle(code);
   if ('C#'==type) code=cleanCStyle(code);
   if ('CSS'==type) code=cleanCSS(code);
 }
