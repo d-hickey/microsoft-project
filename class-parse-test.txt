@@ -1,6 +1,6 @@
 class node{
 int n; int result; int depth;
 
-void func(int input){if(bananas != 27){ return input*n; }
+void func(int input){if(input != 27){ return input*n; }
 return 0;
 }for(int i=0; i<10; i++){ printf(i);}}

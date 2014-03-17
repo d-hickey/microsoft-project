@@ -1,3 +1,12 @@
+// The initialize function is required for all apps.
+Office.initialize = function (reason) {
+    // Checks for the DOM to load using the jQuery ready function.
+    $(document).ready(function () {
+    // After the DOM is loaded, app-specific code can run.
+    // Add any initialization logic to this function.
+    });
+}
+
 //gogo global variable
 var level=0;
 var LOOP_SIZE=100;
@@ -25,9 +34,19 @@ function finishTabifier(code) {
   code=code.replace(/\n\s*\n/g, '\n');  //blank lines
   code=code.replace(/^[\s\n]*/, ''); //leading space
   code=code.replace(/[\s\n]*$/, ''); //trailing space
+  
+  $.get(
+    "http://markup.su/api/highlighter",
+    {language : 'Java', theme : 'IDLE', source : code},
+    function(data) {
+        document.getElementById("results").outerHTML = data;
+        Office.context.document.setSelectedDataAsync(data, { coercionType: 'html' });
+        //alert('page content: ' + data);
+    }
+  );
 
-  document.getElementById("results").outerHTML = "<pre id=\"results\" class=\"prettyprint\"><pre>" + code + "</pre>";
-  PR.prettyPrint();
+  //document.getElementById("results").outerHTML = "<pre id=\"results\" class=\"prettyprint\"><pre>" + code + "</pre>";
+  //PR.prettyPrint();
   level=0;
 }
 
