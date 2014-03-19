@@ -41,7 +41,7 @@ function finishTabifier(code) {
   // makes get request to syntax highlighting api
   $.get(
     "http://markup.su/api/highlighter",
-    {language : lang, theme : 'IDLE', source : code},
+    {language : 'Java', theme : 'IDLE', source : code},
     function(data) {
         document.getElementById("results").outerHTML = data;
         Office.context.document.setSelectedDataAsync(data, { coercionType: 'html' });
