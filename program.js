@@ -35,18 +35,16 @@ function finishTabifier(code) {
   code=code.replace(/^[\s\n]*/, ''); //leading space
   code=code.replace(/[\s\n]*$/, ''); //trailing space
   
+  // makes get request to syntax highlighting api
   $.get(
     "http://markup.su/api/highlighter",
-    {language : 'Java', theme : 'IDLE', source : code},
+    {language : 'Autodetect', theme : 'IDLE', source : code},
     function(data) {
         document.getElementById("results").outerHTML = data;
         Office.context.document.setSelectedDataAsync(data, { coercionType: 'html' });
-        //alert('page content: ' + data);
     }
   );
 
-  //document.getElementById("results").outerHTML = "<pre id=\"results\" class=\"prettyprint\"><pre>" + code + "</pre>";
-  //PR.prettyPrint();
   level=0;
 }
 
