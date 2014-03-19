@@ -11,12 +11,15 @@ Office.initialize = function (reason) {
 var level=0;
 var LOOP_SIZE=100;
 var tabstop;
+var lang;
 
 function runTabifier() {
   var code = document.getElementById('code').value;
   var type=document.getElementById('mydropdown');
   type=type.options[type.selectedIndex].value;
-	
+
+  lang = type;
+  
   tabstop=document.getElementById('spacepicker');
   tabstop=tabstop.options[tabstop.selectedIndex].value;
 
@@ -38,7 +41,7 @@ function finishTabifier(code) {
   // makes get request to syntax highlighting api
   $.get(
     "http://markup.su/api/highlighter",
-    {language : 'IDLE', theme : 'IDLE', source : code},
+    {language : lang, theme : 'IDLE', source : code},
     function(data) {
         document.getElementById("results").outerHTML = data;
         Office.context.document.setSelectedDataAsync(data, { coercionType: 'html' });
