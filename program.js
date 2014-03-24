@@ -11,14 +11,12 @@ Office.initialize = function (reason) {
 var level=0;
 var LOOP_SIZE=100;
 var tabstop;
-var lang;
 
 function runTabifier() {
   var code = document.getElementById('code').value;
   var type=document.getElementById('mydropdown');
   type=type.options[type.selectedIndex].value;
 
-  lang = type;
   
   tabstop=document.getElementById('spacepicker');
   tabstop=tabstop.options[tabstop.selectedIndex].value;
@@ -38,8 +36,18 @@ function finishTabifier(code) {
   code=code.replace(/^[\s\n]*/, ''); //leading space
   code=code.replace(/[\s\n]*$/, ''); //trailing space
   
+  
+  
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open( "GET", "http://markup.su/api/highlighter?language=Java&theme=IDLE&source=" + encodeURIComponent(code), false);
+  xmlHttp.send( null );
+  code = xmlHttp.responseText;
+  
+  document.getElementById("results").outerHTML = code;
+  Office.context.document.setSelectedDataAsync(code, { coercionType: 'html' });
+  
   // makes get request to syntax highlighting api
-  $.get(
+ /* $.get(
     "http://markup.su/api/highlighter",
     {language : 'Java', theme : 'IDLE', source : code},
     function(data) {
@@ -47,7 +55,9 @@ function finishTabifier(code) {
         Office.context.document.setSelectedDataAsync(data, { coercionType: 'html' });
     }
   );
-
+  */
+  //document.getElementById("debug").outerHTML = "test";
+	
   level=0;
 }
 

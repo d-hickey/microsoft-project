@@ -4,10 +4,10 @@
     xsi:type="TaskPaneApp">
   <Id>95f6d464-3c9d-4f02-8f97-2c4d0b6ef1fc</Id>
   <Version>1.0</Version>
-  <ProviderName>Microsoft</ProviderName>
+  <ProviderName>TEAM BLaZE</ProviderName>
   <DefaultLocale>EN-US</DefaultLocale>
   <DisplayName DefaultValue="Code Formatting App"/>
-  <Description DefaultValue="An app for formatting and highlighting Java code."/>
+  <Description DefaultValue="An app for formatting and highlighting code."/>
   <IconUrl DefaultValue=
     "http://officeimg.vo.msecnd.net/_layouts/images/general/office_logo.jpg"/>
 
@@ -16,7 +16,7 @@
   </Capabilities>
 
   <DefaultSettings>
-    <SourceLocation DefaultValue="C:\Users\MyLaptop\Documents\GitHub\microsoft-project\codeFormatting.html"/>
+    <SourceLocation DefaultValue="C:\Users\Fujitsu\Documents\GitHub\microsoft-project\CodeFormatting.html"/>
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
 </OfficeApp>
