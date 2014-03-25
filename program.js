@@ -11,14 +11,12 @@ Office.initialize = function (reason) {
 var level=0;
 var LOOP_SIZE=100;
 var tabstop;
-var lang;
 
 function runTabifier() {
   var code = document.getElementById('code').value;
   var type=document.getElementById('mydropdown');
   type=type.options[type.selectedIndex].value;
 
-  lang = type;
   
   tabstop=document.getElementById('spacepicker');
   tabstop=tabstop.options[tabstop.selectedIndex].value;
@@ -40,7 +38,13 @@ function finishTabifier(code) {
     
     code=code.replace('<', '&lt');
     code=code.replace('>', '&gt');
-  
+  /*
+    // makes get request to syntax highlighting api
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", "http://markup.su/api/highlighter?language=Java&theme=IDLE&source=" + encodeURIComponent(code), false);
+    xmlHttp.send( null );
+    code = xmlHttp.responseText;
+    */
     code = highlight(code);
     document.getElementById("results").outerHTML = code;
     Office.context.document.setSelectedDataAsync(code, { coercionType: 'html' });
@@ -121,6 +125,7 @@ function highlight(code){
         }
     }
     return "<pre>" + out + "</pre></br></br>";
+
 }
 
 function repeat(pattern, count) {
