@@ -34,21 +34,93 @@ function runTabifier() {
 }
 
 function finishTabifier(code) {
-  code=code.replace(/\n\s*\n/g, '\n');  //blank lines
-  code=code.replace(/^[\s\n]*/, ''); //leading space
-  code=code.replace(/[\s\n]*$/, ''); //trailing space
+    code=code.replace(/\n\s*\n/g, '\n');  //blank lines
+    code=code.replace(/^[\s\n]*/, ''); //leading space
+    code=code.replace(/[\s\n]*$/, ''); //trailing space
+    
+    code=code.replace('<', '&lt');
+    code=code.replace('>', '&gt');
   
-  // makes get request to syntax highlighting api
-  $.get(
-    "http://markup.su/api/highlighter",
-    {language : 'Java', theme : 'IDLE', source : code},
-    function(data) {
-        document.getElementById("results").outerHTML = data;
-        Office.context.document.setSelectedDataAsync(data, { coercionType: 'html' });
-    }
-  );
+    code = highlight(code);
+    document.getElementById("results").outerHTML = code;
+    Office.context.document.setSelectedDataAsync(code, { coercionType: 'html' });
+    level=0;
+}
 
-  level=0;
+// returns code highlighted with html
+function highlight(code){
+    var i = 0;
+    var c;
+    var out = "";
+    while(i < code.length){
+        c = code.charAt(i);
+        if(code.substring(i,i+4) === "int "){
+            out = out + "<span style=\"color:blue\">int</span>";
+            i = i+3;
+        }
+        else if(code.substring(i,i+5) === "byte "){
+            out = out + "<span style=\"color:blue\">byte</span>";
+            i = i+4;
+        }
+        else if(code.substring(i,i+6) === "short "){
+            out = out + "<span style=\"color:blue\">short</span>";
+            i = i+5;
+        }
+        else if(code.substring(i,i+5) === "long "){
+            out = out + "<span style=\"color:blue\">long</span>";
+            i = i+4;
+        }
+        else if(code.substring(i,i+6) === "float "){
+            out = out + "<span style=\"color:blue\">float</span>";
+            i = i+5;
+        }
+        else if(code.substring(i,i+7) === "double "){
+            out = out + "<span style=\"color:blue\">double</span>";
+            i = i+6;
+        }
+        else if(code.substring(i,i+8) === "boolean "){
+            out = out + "<span style=\"color:blue\">boolean</span>";
+            i = i+7;
+        }
+        else if(code.substring(i,i+5) === "char "){
+            out = out + "<span style=\"color:blue\">char</span>";
+            i = i+4;
+        }
+        else if(code.substring(i,i+5) === "void "){
+            out = out + "<span style=\"color:blue\">void</span>";
+            i = i+4;
+        }
+        else if(code.substring(i,i+7) === "return "){
+            out = out + "<span style=\"color:blue\">return</span>";
+            i = i+6;
+        }
+        
+        else if(code.substring(i,i+4) === " for"){
+            out = out + "<span style=\"color:orange\"> for</span>";
+            i = i+4;
+        }
+        else if(code.substring(i,i+4) === "else"){
+            out = out + "<span style=\"color:orange\">else</span>";
+            i = i+4;
+        }
+        else if(code.substring(i,i+2) === "if"){
+            out = out + "<span style=\"color:orange\">if</span>";
+            i = i+2;
+        }
+        else if(code.substring(i,i+5) === "while"){
+            out = out + "<span style=\"color:orange\">while</span>";
+            i = i+5;
+        }
+        else if(code.substring(i,i+6) === "class "){
+            out = out + "<span style=\"color:orange\">class</span>";
+            i = i+5;
+        }
+        else{
+            out = out + c;
+            i = i+1;
+        }
+    }
+    return "<pre>" + out + "</pre></br></br>";
 }
 
 function repeat(pattern, count) {
