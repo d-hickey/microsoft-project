@@ -13,13 +13,15 @@ var LOOP_SIZE=100;
 var tabstop;
 
 function runTabifier() {
+  //alert("tabifier runs");
   var code = document.getElementById('code').value;
-  var type=document.getElementById('mydropdown');
-  type=type.options[type.selectedIndex].value;
-
+  //var type=document.getElementById('mydropdown');
+  //type=type.options[type.selectedIndex].value;
+  var type = 'Java';
   
-  tabstop=document.getElementById('spacepicker');
-  tabstop=tabstop.options[tabstop.selectedIndex].value;
+  //tabstop=document.getElementById('spacepicker');
+  //tabstop=tabstop.options[tabstop.selectedIndex].value;
+  tabstop = 4;
 
   //console.log(tabstop+"ok");
 
@@ -45,9 +47,13 @@ function finishTabifier(code) {
     xmlHttp.send( null );
     code = xmlHttp.responseText;
     */
+   // alert("code is formatted, not highlighted");
     code = highlight(code);
     document.getElementById("results").outerHTML = code;
     Office.context.document.setSelectedDataAsync(code, { coercionType: 'html' });
+    
+   // alert("tabifier ends");
+    
     level=0;
 }
 
