@@ -38,8 +38,17 @@ function finishTabifier(code) {
     code=code.replace(/^[\s\n]*/, ''); //leading space
     code=code.replace(/[\s\n]*$/, ''); //trailing space
     
-    code=code.replace('<', '&lt');
-    code=code.replace('>', '&gt');
+	code=code.replace(' < ', '<');
+    code=code.replace(' > ', '>');
+
+	code=code.replace(' <', '<');
+    code=code.replace(' >', '>');
+	
+	code=code.replace('< ', '<');
+    code=code.replace('> ', '>');
+	
+    code=code.replace('<', ' &lt ');
+    code=code.replace('>', ' &gt ');
   /*
     // makes get request to syntax highlighting api
     var xmlHttp = new XMLHttpRequest();
@@ -47,12 +56,12 @@ function finishTabifier(code) {
     xmlHttp.send( null );
     code = xmlHttp.responseText;
     */
-   // alert("code is formatted, not highlighted");
+    //alert("code is formatted, not highlighted");
     code = highlight(code);
     document.getElementById("results").outerHTML = code;
     Office.context.document.setSelectedDataAsync(code, { coercionType: 'html' });
     
-   // alert("tabifier ends");
+    //alert("tabifier ends");
     
     level=0;
 }
@@ -62,73 +71,162 @@ function highlight(code){
     var i = 0;
     var c;
     var out = "";
+	var exp = 1; // set to 1 if expecting a keyword
     while(i < code.length){
         c = code.charAt(i);
-        if(code.substring(i,i+4) === "int "){
-            out = out + "<span style=\"color:blue\">int</span>";
-            i = i+3;
-        }
-        else if(code.substring(i,i+5) === "byte "){
-            out = out + "<span style=\"color:blue\">byte</span>";
-            i = i+4;
-        }
-        else if(code.substring(i,i+6) === "short "){
-            out = out + "<span style=\"color:blue\">short</span>";
-            i = i+5;
-        }
-        else if(code.substring(i,i+5) === "long "){
-            out = out + "<span style=\"color:blue\">long</span>";
-            i = i+4;
-        }
-        else if(code.substring(i,i+6) === "float "){
-            out = out + "<span style=\"color:blue\">float</span>";
-            i = i+5;
-        }
-        else if(code.substring(i,i+7) === "double "){
-            out = out + "<span style=\"color:blue\">double</span>";
-            i = i+6;
-        }
-        else if(code.substring(i,i+8) === "boolean "){
-            out = out + "<span style=\"color:blue\">boolean</span>";
-            i = i+7;
-        }
-        else if(code.substring(i,i+5) === "char "){
-            out = out + "<span style=\"color:blue\">char</span>";
-            i = i+4;
-        }
-        else if(code.substring(i,i+5) === "void "){
-            out = out + "<span style=\"color:blue\">void</span>";
-            i = i+4;
-        }
-        else if(code.substring(i,i+7) === "return "){
-            out = out + "<span style=\"color:blue\">return</span>";
-            i = i+6;
-        }
-        
-        else if(code.substring(i,i+4) === " for"){
-            out = out + "<span style=\"color:orange\"> for</span>";
-            i = i+4;
-        }
-        else if(code.substring(i,i+4) === "else"){
-            out = out + "<span style=\"color:orange\">else</span>";
-            i = i+4;
-        }
-        else if(code.substring(i,i+2) === "if"){
-            out = out + "<span style=\"color:orange\">if</span>";
-            i = i+2;
-        }
-        else if(code.substring(i,i+5) === "while"){
-            out = out + "<span style=\"color:orange\">while</span>";
-            i = i+5;
-        }
-        else if(code.substring(i,i+6) === "class "){
-            out = out + "<span style=\"color:orange\">class</span>";
-            i = i+5;
-        }
-        else{
-            out = out + c;
-            i = i+1;
-        }
+		if(code.substring(i,i+2) === "//"){
+			out = out + "<span style=\"color:green\">";
+			while(c !== '\n'){
+				out = out + c;
+				i = i + 1;
+				c = code.charAt(i);
+			}
+			out = out + '\n' + "</span>";
+			i = i + 1;
+			c = code.charAt(i);
+			exp = 1;
+		}
+		if(code.substring(i,i+2) === "/*"){
+			out = out + "<span style=\"color:green\">";
+			while(code.substring(i,i+2) !== "*/"){
+				out = out + c;
+				i = i + 1;
+				c = code.charAt(i);
+			}
+			out = out + "*/" + "</span>";
+			i = i + 2;
+			c = code.charAt(i);
+			exp = 1;
+		}
+		if(c === '"'){
+			out = out + "<span style=\"color:#585858\">";
+			out = out + c;
+			i = i + 1;
+			c = code.charAt(i);
+			while(c !== '"'){
+				out = out + c;
+				i = i + 1;
+				c = code.charAt(i);
+			}
+			out = out + '"' + "</span>";
+			i = i + 1;
+			c = code.charAt(i);
+			exp = 0;
+		}
+		if(c === "'"){
+			out = out + "<span style=\"color:#585858\">";
+			out = out + c;
+			i = i + 1;
+			c = code.charAt(i);
+			while(c !== "'"){
+				out = out + c;
+				i = i + 1;
+				c = code.charAt(i);
+			}
+			out = out + "'" + "</span>";
+			i = i + 1;
+			c = code.charAt(i);
+			exp = 0;
+		}
+		if(exp === 1){
+			if(code.substring(i,i+4) === "int "){
+				out = out + "<span style=\"color:blue\">int</span>";
+				i = i+3;
+			}
+			else if(code.substring(i,i+5) === "byte "){
+				out = out + "<span style=\"color:blue\">byte</span>";
+				i = i+4;
+			}
+			else if(code.substring(i,i+6) === "short "){
+				out = out + "<span style=\"color:blue\">short</span>";
+				i = i+5;
+			}
+			else if(code.substring(i,i+5) === "long "){
+				out = out + "<span style=\"color:blue\">long</span>";
+				i = i+4;
+			}
+			else if(code.substring(i,i+6) === "float "){
+				out = out + "<span style=\"color:blue\">float</span>";
+				i = i+5;
+			}
+			else if(code.substring(i,i+7) === "double "){
+				out = out + "<span style=\"color:blue\">double</span>";
+				i = i+6;
+			}
+			else if(code.substring(i,i+8) === "boolean "){
+				out = out + "<span style=\"color:blue\">boolean</span>";
+				i = i+7;
+			}
+			else if(code.substring(i,i+5) === "char "){
+				out = out + "<span style=\"color:blue\">char</span>";
+				i = i+4;
+			}
+			else if(code.substring(i,i+5) === "void "){
+				out = out + "<span style=\"color:blue\">void</span>";
+				i = i+4;
+			}
+			else if(code.substring(i,i+7) === "return "){
+				out = out + "<span style=\"color:blue\">return</span>";
+				i = i+6;
+			}
+			else if(code.substring(i,i+7) === "return "){
+				out = out + "<span style=\"color:blue\">return</span>";
+				i = i+6;
+			}
+			
+			else if(code.substring(i,i+7) === "public "){
+				out = out + "<span style=\"color:blue\">public</span>";
+				i = i+6;
+			}
+			else if(code.substring(i,i+7) === "static "){
+				out = out + "<span style=\"color:blue\">static</span>";
+				i = i+6;
+			}
+			else if(code.substring(i,i+8) === "private "){
+				out = out + "<span style=\"color:blue\">private</span>";
+				i = i+7;
+			}
+			else if(code.substring(i,i+6) === "System"){
+				out = out + "<span style=\"color:purple\">System</span>";
+				i = i+6;
+			}
+			
+			else if(code.substring(i,i+3) === "for"){
+				out = out + "<span style=\"color:orange\">for</span>";
+				i = i+3;
+			}
+			else if(code.substring(i,i+4) === "else"){
+				out = out + "<span style=\"color:orange\">else</span>";
+				i = i+4;
+			}
+			else if(code.substring(i,i+2) === "if"){
+				out = out + "<span style=\"color:orange\">if</span>";
+				i = i+2;
+			}
+			else if(code.substring(i,i+5) === "while"){
+				out = out + "<span style=\"color:orange\">while</span>";
+				i = i+5;
+			}
+			else if(code.substring(i,i+6) === "class "){
+				out = out + "<span style=\"color:orange\">class</span>";
+				i = i+5;
+			}
+			else{
+				out = out + c;
+				i = i+1;
+				exp = 0;
+				if(c === ';' || c === ' ' || c === '{' || c === '}' || c === '(' || c === '\n'){
+					exp = 1;
+				}
+			}
+		}
+		else{
+			out = out + c;
+			i = i+1;
+			if(c === ';' || c === ' ' || c === '{' || c === '}' || c === '(' || c === '\n'){
+				exp = 1;
+			}
+		}
     }
     return "<pre>" + out + "</pre></br></br>";
 
