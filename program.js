@@ -12,6 +12,8 @@ var level=0;
 var LOOP_SIZE=100;
 var tabstop = 4;
 var type = 'Java';
+var highlight = 0;
+var format = 0;
 
 function changeHide(one, two){
     document.getElementById(one).style.display = 'none';
@@ -22,23 +24,36 @@ function changeLang(lang){
     type = lang;
 }
 
-function changeIndent(indent){
-    tabstop = indent;
+function changeIndent(newindent){
+    tabstop = newindent;
 }
 
 function runTabifier() {
   //alert("tabifier runs");
   var code = document.getElementById('code').value; 
   
-
+  //alert(document.getElementById("colour").checked);
+  highlight = 0;
+  if(document.getElementById("colour").checked === true){
+    highlight = 1;
+  }
+  format = 0;
+  if(document.getElementById("format").checked === true){
+    format = 1;
+  }
+  
   //console.log(tabstop+"ok");
-
-  if ('C'==type) code=cleanCStyle(code);
-  if ('Java'==type) code=cleanCStyle(code);
-  if ('Javascript'==type) code=cleanCStyle(code);
-  if ('C++'==type) code=cleanCStyle(code);
-  if ('C#'==type) code=cleanCStyle(code);
-  if ('CSS'==type) code=cleanCSS(code);
+  if(format === 1){
+      if ('C'==type) code=cleanCStyle(code);
+      if ('Java'==type) code=cleanCStyle(code);
+      if ('Javascript'==type) code=cleanCStyle(code);
+      if ('C++'==type) code=cleanCStyle(code);
+      if ('C#'==type) code=cleanCStyle(code);
+      if ('CSS'==type) code=cleanCSS(code);
+  }
+  else{
+      finishTabifier(code);
+  }
 }
 
 function finishTabifier(code) {
@@ -66,15 +81,16 @@ function finishTabifier(code) {
     */
     //alert("code is formatted, not highlighted");
     code = code + '\n';
-    
-    if(type=='CSS'){
-        code = CSShighlight(code);
+    if(highlight === 1){
+        if(type=='CSS'){
+            code = CSShighlight(code);
+        }
+        else{
+            code = highlightC(code);
+        }
     }
-    else{
-        code = highlight(code);
-    }
-    
-    document.getElementById("results").outerHTML = code;
+    code = "<pre>" + code + "</pre>"
+    //document.getElementById("results").outerHTML = code;
     Office.context.document.setSelectedDataAsync(code, { coercionType: 'html' });
     
     //alert("tabifier ends");
@@ -90,7 +106,18 @@ function CSShighlight(code){
     out = out + "<span style=\"color:blue\">";
     while(i < code.length){
         c = code.charAt(i);
-        if(c === ','){
+        if(code.substring(i,i+2) === "/*"){
+			out = out + "<span style=\"color:green\">";
+			while(code.substring(i,i+2) !== "*/"){
+				out = out + c;
+				i = i + 1;
+				c = code.charAt(i);
+			}
+			out = out + "*/" + "</span>";
+			i = i + 2;
+			c = code.charAt(i);
+		}
+        else if(c === ','){
             out = out + "</span>" + ',' + "<span style=\"color:blue\">";
             i = i + 1;
         }
@@ -123,11 +150,11 @@ function CSShighlight(code){
             i = i + 1;
         }     
     }
-    return "<pre>" + out + "</pre>";
+    return out;
 }
 
-// returns java code highlighted with html
-function highlight(code){
+// returns C Style code highlighted with html
+function highlightC(code){
     var i = 0;
     var c;
     var out = "";
@@ -146,7 +173,7 @@ function highlight(code){
 			c = code.charAt(i);
 			exp = 1;
 		}
-		if(code.substring(i,i+2) === "/*"){
+		else if(code.substring(i,i+2) === "/*"){
 			out = out + "<span style=\"color:green\">";
 			while(code.substring(i,i+2) !== "*/"){
 				out = out + c;
@@ -158,7 +185,7 @@ function highlight(code){
 			c = code.charAt(i);
 			exp = 1;
 		}
-		if(c === '"'){
+		else if(c === '"'){
 			out = out + "<span style=\"color:#585858\">";
 			out = out + c;
 			i = i + 1;
@@ -173,7 +200,7 @@ function highlight(code){
 			c = code.charAt(i);
 			exp = 0;
 		}
-		if(c === "'"){
+		else if(c === "'"){
 			out = out + "<span style=\"color:#585858\">";
 			out = out + c;
 			i = i + 1;
@@ -188,7 +215,7 @@ function highlight(code){
 			c = code.charAt(i);
 			exp = 0;
 		}
-		if(exp === 1){
+		else if(exp === 1){
 			if(code.substring(i,i+4) === "int "){
 				out = out + "<span style=\"color:blue\">int</span>";
 				i = i+3;
@@ -225,15 +252,69 @@ function highlight(code){
 				out = out + "<span style=\"color:blue\">void</span>";
 				i = i+4;
 			}
+            
 			else if(code.substring(i,i+7) === "return "){
 				out = out + "<span style=\"color:blue\">return</span>";
 				i = i+6;
 			}
-			else if(code.substring(i,i+7) === "return "){
-				out = out + "<span style=\"color:blue\">return</span>";
+            
+			else if(code.substring(i,i+9) === "abstract "){
+				out = out + "<span style=\"color:blue\">abstract</span>";
+				i = i+8;
+			}
+            else if(code.substring(i,i+8) === "extends "){
+				out = out + "<span style=\"color:blue\">extends</span>";
+				i = i+7;
+			}
+            else if(code.substring(i,i+6) === "super;" || code.substring(i,i+6) === "super(" || code.substring(i,i+6) === "super."){
+				out = out + "<span style=\"color:blue\">super</span>";
+				i = i+5;
+			}
+            else if(code.substring(i,i+5) === "this;" || code.substring(i,i+5) === "this(" || code.substring(i,i+5) === "this."){
+				out = out + "<span style=\"color:blue\">this</span>";
+				i = i+4;
+			}
+            
+            else if(code.substring(i,i+6) === "catch " || code.substring(i,i+6) === "catch("){
+				out = out + "<span style=\"color:blue\">catch</span>";
+				i = i+5;
+			}
+            else if(code.substring(i,i+4) === "try " || code.substring(i,i+4) === "try{"){
+				out = out + "<span style=\"color:blue\">try</span>";
+				i = i+3;
+			}
+            
+            else if(code.substring(i,i+7) === "switch " || code.substring(i,i+7) === "switch("){
+				out = out + "<span style=\"color:blue\">switch</span>";
 				i = i+6;
+			}
+			else if(code.substring(i,i+5) === "case "){
+				out = out + "<span style=\"color:blue\">case</span>";
+				i = i+4;
+			}
+			else if(code.substring(i,i+6) === "break;"){
+				out = out + "<span style=\"color:blue\">break</span>";
+				i = i+5;
 			}
 			
+            else if(code.substring(i,i+8) === "package "){
+				out = out + "<span style=\"color:blue\">package</span>";
+				i = i+7;
+			}
+			else if(code.substring(i,i+7) === "import "){
+				out = out + "<span style=\"color:blue\">import</span>";
+				i = i+6;
+			}
+			else if(code.substring(i,i+8) === "default "){
+				out = out + "<span style=\"color:blue\">default</span>";
+				i = i+7;
+			}
+            
+            else if(code.substring(i,i+4) === "new "){
+				out = out + "<span style=\"color:blue\">new</span>";
+				i = i+3;
+			}
+            
 			else if(code.substring(i,i+7) === "public "){
 				out = out + "<span style=\"color:blue\">public</span>";
 				i = i+6;
@@ -251,19 +332,19 @@ function highlight(code){
 				i = i+6;
 			}
 			
-			else if(code.substring(i,i+3) === "for"){
+			else if(code.substring(i,i+5) === "for ("){
 				out = out + "<span style=\"color:orange\">for</span>";
 				i = i+3;
 			}
-			else if(code.substring(i,i+4) === "else"){
+			else if(code.substring(i,i+5) === "else " || code.substring(i,i+5) === "else{"){
 				out = out + "<span style=\"color:orange\">else</span>";
 				i = i+4;
 			}
-			else if(code.substring(i,i+2) === "if"){
+			else if(code.substring(i,i+3) === "if " || code.substring(i,i+3) === "if("){
 				out = out + "<span style=\"color:orange\">if</span>";
 				i = i+2;
 			}
-			else if(code.substring(i,i+5) === "while"){
+			else if(code.substring(i,i+6) === "while " || code.substring(i,i+6) === "while("){
 				out = out + "<span style=\"color:orange\">while</span>";
 				i = i+5;
 			}
@@ -288,7 +369,7 @@ function highlight(code){
 			}
 		}
     }
-    return "<pre>" + out + "</pre></br></br>";
+    return out;
 
 }
 
