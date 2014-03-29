@@ -61,24 +61,18 @@ function finishTabifier(code) {
     code=code.replace(/^[\s\n]*/, ''); //leading space
     code=code.replace(/[\s\n]*$/, ''); //trailing space
     
-	code=code.replace(' < ', '<');
-    code=code.replace(' > ', '>');
+	code=code.replace(/ < /g, '<');
+    code=code.replace(/ > /g, '>');
 
-	code=code.replace(' <', '<');
-    code=code.replace(' >', '>');
+	code=code.replace(/ </g, '<');
+    code=code.replace(/ >/g, '>');
 	
-	code=code.replace('< ', '<');
-    code=code.replace('> ', '>');
-	
-    code=code.replace('<', ' &lt ');
-    code=code.replace('>', ' &gt ');
-  /*
-    // makes get request to syntax highlighting api
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", "http://markup.su/api/highlighter?language=Java&theme=IDLE&source=" + encodeURIComponent(code), false);
-    xmlHttp.send( null );
-    code = xmlHttp.responseText;
-    */
+	code=code.replace(/< /g, '<');
+    code=code.replace(/> /g, '>');
+
+    code=code.replace(/</g, ' &lt ');
+    code=code.replace(/>/g, ' &gt ');
+
     //alert("code is formatted, not highlighted");
     code = code + '\n';
     if(highlight === 1){
@@ -252,6 +246,10 @@ function highlightC(code){
 				out = out + "<span style=\"color:blue\">void</span>";
 				i = i+4;
 			}
+            else if(code.substring(i,i+4) === "var "){
+				out = out + "<span style=\"color:blue\">var</span>";
+				i = i+3;
+			}
             
 			else if(code.substring(i,i+7) === "return "){
 				out = out + "<span style=\"color:blue\">return</span>";
@@ -309,12 +307,20 @@ function highlightC(code){
 				out = out + "<span style=\"color:blue\">default</span>";
 				i = i+7;
 			}
+            else if(code.substring(i,i+9) === "#include "){
+				out = out + "<span style=\"color:blue\">#include</span>";
+				i = i+8;
+			}
             
             else if(code.substring(i,i+4) === "new "){
 				out = out + "<span style=\"color:blue\">new</span>";
 				i = i+3;
 			}
             
+            else if(code.substring(i,i+9) === "function "){
+				out = out + "<span style=\"color:blue\">function</span>";
+				i = i+8;
+			}
 			else if(code.substring(i,i+7) === "public "){
 				out = out + "<span style=\"color:blue\">public</span>";
 				i = i+6;
@@ -351,6 +357,10 @@ function highlightC(code){
 			else if(code.substring(i,i+6) === "class "){
 				out = out + "<span style=\"color:orange\">class</span>";
 				i = i+5;
+			}
+            else if(code.substring(i,i+7) === "struct "){
+				out = out + "<span style=\"color:orange\">struct</span>";
+				i = i+6;
 			}
 			else{
 				out = out + c;
