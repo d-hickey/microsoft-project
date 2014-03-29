@@ -10,18 +10,26 @@ Office.initialize = function (reason) {
 //gogo global variable
 var level=0;
 var LOOP_SIZE=100;
-var tabstop;
+var tabstop = 4;
+var type = 'Java';
+
+function changeHide(one, two){
+    document.getElementById(one).style.display = 'none';
+    document.getElementById(two).style.display = 'block';
+}
+
+function changeLang(lang){
+    type = lang;
+}
+
+function changeIndent(indent){
+    tabstop = indent;
+}
 
 function runTabifier() {
   //alert("tabifier runs");
-  var code = document.getElementById('code').value;
-  //var type=document.getElementById('mydropdown');
-  //type=type.options[type.selectedIndex].value;
-  var type = 'Java';
+  var code = document.getElementById('code').value; 
   
-  //tabstop=document.getElementById('spacepicker');
-  //tabstop=tabstop.options[tabstop.selectedIndex].value;
-  tabstop = 4;
 
   //console.log(tabstop+"ok");
 
@@ -57,7 +65,15 @@ function finishTabifier(code) {
     code = xmlHttp.responseText;
     */
     //alert("code is formatted, not highlighted");
-    code = highlight(code);
+    code = code + '\n';
+    
+    if(type=='CSS'){
+        code = CSShighlight(code);
+    }
+    else{
+        code = highlight(code);
+    }
+    
     document.getElementById("results").outerHTML = code;
     Office.context.document.setSelectedDataAsync(code, { coercionType: 'html' });
     
@@ -66,7 +82,51 @@ function finishTabifier(code) {
     level=0;
 }
 
-// returns code highlighted with html
+function CSShighlight(code){
+    var i = 0;
+    var c;
+    var out = "";
+    
+    out = out + "<span style=\"color:blue\">";
+    while(i < code.length){
+        c = code.charAt(i);
+        if(c === ','){
+            out = out + "</span>" + ',' + "<span style=\"color:blue\">";
+            i = i + 1;
+        }
+        else if(c === ':'){
+            out = out + "</span>" + ':' + "<span style=\"color:orange\">";
+            i = i + 1;
+        }
+        else if(c === '{'){
+            out = out + "</span>" + '{' + "<span style=\"color:#585858\">";
+            i = i + 1;
+            c = code.charAt(i);
+            while(c !== '}'){
+                if(c === ':'){
+                    out = out + "</span>" + ':';
+                }
+                else if(c === ';'){
+                    out = out + ';' + "<span style=\"color:#585858\">";
+                }
+                else {
+                    out = out + c;
+                }
+                i = i + 1;
+                c = code.charAt(i);
+            }
+            out = out + "</span>" + '}' + "<span style=\"color:blue\">";
+            i = i + 1;
+        }
+        else{
+            out = out + c;
+            i = i + 1;
+        }     
+    }
+    return "<pre>" + out + "</pre>";
+}
+
+// returns java code highlighted with html
 function highlight(code){
     var i = 0;
     var c;
