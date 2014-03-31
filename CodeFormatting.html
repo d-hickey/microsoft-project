@@ -19,6 +19,9 @@
 		$('#code').width($(document).width()-40);
 		$('#code').height($(document).height() / 5);
 	});
+	$(window).resize(function() {
+		$('#code').width($( window ).width()-80);
+	});
 </script>
 
 </head>
@@ -29,7 +32,7 @@
 	<div class="container">
 		<div style="text-align:center">
 			<ul class="nav navbar-nav" style="font-size:20px">
-				<a href="#">Home</a>&nbsp;&nbsp;
+				<a onclick="changeHide('options', 'index')" href="#"><b>Home</b></a>&nbsp;&nbsp;
 				<a href="help.html">Help</a>&nbsp;&nbsp;
 				<a href="contact.html">Contact</a>&nbsp;&nbsp;
 			</ul>
@@ -83,7 +86,7 @@
 		</div> 
 
 		<div class="container" id="options" style="display:none">
-
+		
 			<div class="moreOptions">
 				<h1>More Options</h1>
 				<p class="lead">Select your preferences from the following Dropdown <br>menus below to customise how your code will look</p>
