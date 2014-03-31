@@ -17,7 +17,7 @@
 <script>
 	$(document).ready(function() {
 		$('#code').width($(document).width()-40);
-		$('#code').height($(document).height()-($('#footer-container').height()*1.5));
+		$('#code').height($(document).height() / 5);
 	});
 </script>
 
@@ -27,19 +27,11 @@
 <!-- Static navbar -->
 <div class="navbar navbar-static-top">
 	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#">Code Formatter App</a>
-		</div>
-		<div class="navbar-collapse collapse">
-			<ul class="nav navbar-nav">
-				<li class="active"><a href="#">Home</a></li>
-				<li><a href="help.html">Help</a></li>
-				<li><a href="contact.html">Contact</a></li>
+		<div style="text-align:center">
+			<ul class="nav navbar-nav" style="font-size:20px">
+				<a href="#">Home</a>&nbsp;&nbsp;
+				<a href="help.html">Help</a>&nbsp;&nbsp;
+				<a href="contact.html">Contact</a>&nbsp;&nbsp;
 			</ul>
 		</div>
 	</div>
