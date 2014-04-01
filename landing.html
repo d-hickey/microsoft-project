@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+<!-- Bootstrap core CSS -->
+<link href="bootstrap-3.1.1-dist/css/bootstrap.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="program.css" />
+
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
+<script src="https://appsforoffice.microsoft.com/lib/1.0/hosted/office.js"></script>
+
+<script src="program.js"></script>
+
+<script>
+	$(document).ready(function() {
+		var myDisplayLanguage = Office.context.displayLanguage;
+		$('#test').html(myDisplayLanguage);
+		if(myDisplayLanguage=='es-ES'){
+			window.location = "helpSpanish.html";
+		}
+		else{
+			window.location = "help.html";
+		}
+		
+	});
+</script>
+
+</head>
+<body>
+<a id="test"></a>
+<!-- Static navbar -->
+<div class="navbar navbar-static-top">
+
+	<div class="container">
+			</div>
+
+
+			<!-- Main component for a primary marketing message or call to action -->
+
+			&nbsp;&nbsp;
+			
+		</div> 
+
+
+
+	<div id="results"></div>
+</div><!-- /container -->
+
+
+<!-- Bootstrap core JavaScript
+	================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="bootstrap-3.1.1-dist/assets/js/jquery.js"></script>
+<script src="bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
+</body>
+</html>

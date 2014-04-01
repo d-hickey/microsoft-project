@@ -4,10 +4,18 @@
     xsi:type="TaskPaneApp">
   <Id>95f6d464-3c9d-4f02-8f97-2c4d0b6ef1fc</Id>
   <Version>1.0</Version>
-  <ProviderName>TEAM BLaZE</ProviderName>
+  <ProviderName>BLAZE</ProviderName>
   <DefaultLocale>EN-US</DefaultLocale>
-  <DisplayName DefaultValue="Code Formatting App"/>
-  <Description DefaultValue="An app for formatting and highlighting code."/>
+  <!--<DisplayName DefaultValue="Code Formatting App"/>-->
+  
+  <DisplayName DefaultValue="Code Formatting App">
+    <Override Locale="es-es" Value="Aplicación de uso internacional"/>
+  </DisplayName>
+  <Description DefaultValue="An app for formatting and highlighting code.">
+    <Override Locale="es-es" Value="Una aplicación para la prueba de la localización"/>
+  </Description>
+  
+<!--  <Description DefaultValue="An app for formatting and highlighting code."/>-->
   <IconUrl DefaultValue=
     "C:\Users\MyLaptop\Documents\GitHub\microsoft-project\images\Logo1.jpg"/>
 
@@ -16,7 +24,7 @@
   </Capabilities>
 
   <DefaultSettings>
-    <SourceLocation DefaultValue="C:\Users\MyLaptop\Documents\GitHub\microsoft-project\CodeFormatting.html"/>
+    <SourceLocation DefaultValue="\\LIANA-PC\microsoft-project\landing.html"/>
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
 </OfficeApp>
