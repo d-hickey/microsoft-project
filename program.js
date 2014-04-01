@@ -22,10 +22,16 @@ function changeHide(one, two){
 
 function changeLang(lang){
     type = lang;
+	var x = document.getElementById("dispLanguage");
+	x.innerHTML = lang;
+	var y = document.getElementById("dropLang");
+	y.innerHTML = "Language = " + lang;
 }
 
 function changeIndent(newindent){
     tabstop = newindent;
+	var x = document.getElementById("dropIndent");
+	x.innerHTML = "Indentation = " + newindent + " spaces";
 }
 
 function runTabifier() {
