@@ -17,12 +17,11 @@
 <script>
 	$(document).ready(function() {
 		var myDisplayLanguage = Office.context.displayLanguage;
-		$('#test').html(myDisplayLanguage);
 		if(myDisplayLanguage=='es-ES'){
-			window.location = "helpSpanish.html";
+			window.location = "CodeFormattingSpanish.html";
 		}
 		else{
-			window.location = "help.html";
+			window.location = "CodeFormatting.html";
 		}
 		
 	});
@@ -30,7 +29,6 @@
 
 </head>
 <body>
-<a id="test"></a>
 <!-- Static navbar -->
 <div class="navbar navbar-static-top">
 
