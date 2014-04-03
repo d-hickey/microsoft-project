@@ -50,11 +50,11 @@
 					<label class="language"> Choose Programming Language: </label>
 					<br>
 				
-					<div class="btn btn-lg btn-primary" onclick="changeLang('Java')" >Java</div>
+					<div class="btn btn-lg btn-primary" onclick="changeLang('Java');" >Java</div>
 					&nbsp;&nbsp;
-					<div class="btn btn-lg btn-primary" onclick="changeLang('Javascript')"> JS </div>
+					<div class="btn btn-lg btn-primary" onclick="changeLang('Javascript');"> JS </div>
 					&nbsp;&nbsp;
-					<div class="btn btn-lg btn-primary" onclick="changeLang('CSS')"> CSS </div> 
+					<div class="btn btn-lg btn-primary" onclick="changeLang('CSS');"> CSS </div> 
 					<br>
 					<b>Current Language:</b> <div id="dispLanguage"> Java </div>
 					<br>
@@ -62,7 +62,7 @@
 
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" id="format" checked> Formatting
+							<input type="checkbox" id="format" onclick="changeCommentCheck(this);" checked> Formatting
 						</label>
 					</div>
 					<div class="checkbox">
@@ -71,7 +71,7 @@
 						</label>
 					</div>
 					<div class="checkbox">
-						<label>
+						<label id="commentCheckLabel">
 							<input type="checkbox" id="comment" checked> Comments
 						</label>
 					</div>

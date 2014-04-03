@@ -15,6 +15,15 @@ var type = 'Java';
 var highlight = 0;
 var format = 0;
 
+function changeCommentCheck(checkbox){
+    if(checkbox.checked === false){
+        document.getElementById("commentCheckLabel").style.display = 'none';
+    } else{
+        document.getElementById("commentCheckLabel").style.display = 'block';
+    }
+}
+    
+
 function changeHide(one, two){
     document.getElementById(one).style.display = 'none';
     document.getElementById(two).style.display = 'block';
