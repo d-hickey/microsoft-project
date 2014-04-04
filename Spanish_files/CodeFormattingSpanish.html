@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+<!-- Bootstrap core CSS -->
+<link href="../bootstrap-3.1.1-dist/css/bootstrap.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="../program.css" />
+
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
+<script src="https://appsforoffice.microsoft.com/lib/1.0/hosted/office.js"></script>
+
+<script src="../program.js"></script>
+
+<script>
+	$(document).ready(function() {
+		$('#code').width($(document).width()-40);
+		$('#code').height($(document).height() / 5);
+	});
+	$(window).resize(function() {
+		$('#code').width($( window ).width()-80);
+	});
+</script>
+
+</head>
+<body>
+<!-- Static navbar -->
+<div class="navbar navbar-static-top">
+	<div class="container">
+		<div style="text-align:center">
+			<ul class="nav navbar-nav" style="font-size:20px">
+				<a onclick="changeHide('options', 'index')" href="#"><b>Portada</b></a>&nbsp;&nbsp;
+				<a href="helpSpanish.html">Ayudar</a>&nbsp;&nbsp;
+				<a href="contactSpanish.html">Contacto</a>&nbsp;&nbsp;
+			</ul>
+		</div>
+		
+	</div>
+	
+	<div class="container">
+		<div class="textBox" id="index">
+			<div class="col-lg-12">
+				<div class="textBox">
+					<textarea id="code" name="txt_code" class="textBox input-sm" style="padding:10px; top:10px;text-align:left;"  placeholder="Paste Code Here"  data-validation-required-message="No Code Entered" ></textarea>
+				</div>
+				<div id="footer-container">
+					<br>
+					<label class="language"> Elija Lenguaje de Programación: </label>
+					<br>
+				
+					<div class="btn btn-lg btn-primary" onclick="changeLang('Java')" >Java</div>
+					&nbsp;&nbsp;
+					<div class="btn btn-lg btn-primary" onclick="changeLang('Javascript')"> JS </div>
+					&nbsp;&nbsp;
+					<div class="btn btn-lg btn-primary" onclick="changeLang('CSS')"> CSS </div> 
+					<br>
+					<b>Idioma actual:</b> <div id="dispLanguage">  </div>
+					<br>
+					<a onclick="changeHide('index', 'options')" href="#">Más opciones</a>
+
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" id="format" checked> Formateo
+						</label>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" id="colour" checked> Coloración
+						</label>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" id="comment" checked> Comentarios
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<!-- Main component for a primary marketing message or call to action -->
+
+			&nbsp;&nbsp;
+			<div class="btn btn-lg btn-primary" onclick="runTabifier()">Formato de mi código &raquo;</div>
+
+		</div> 
+
+		<div class="container" id="options" style="display:none">
+		
+			<div class="moreOptions">
+				<h1>Más opciones</h1>
+				<p class="lead">Seleccione sus preferencias a partir de la siguiente desplegable <br>menús siguientes para personalizar la forma en que su código será</p>
+			</div>
+
+			<!--Language Drop Down-->
+			<div class="btn-group">
+
+				<div class="btn btn-lg btn-primary" data-toggle="dropdown" href="../../components/#navbar"><div id="dropLang">Idiomas</div>  &#9660; </div>
+
+			</a>
+			<ul class="dropdown-menu">
+				<button type="button" class="btn btn-link" onclick="changeLang('Java')">Java</button><br>
+				<button type="button" class="btn btn-link" onclick="changeLang('C')">C</button><br>
+				<button type="button" class="btn btn-link" onclick="changeLang('C++')">C++</button><br>
+				<button type="button" class="btn btn-link" onclick="changeLang('C#')">C#</button><br>
+				<button type="button" class="btn btn-link" onclick="changeLang('Javascript')">JavaScript</button><br>
+				<button type="button" class="btn btn-link" onclick="changeLang('CSS')">CSS</button>
+				<!-- dropdown menu links -->
+			</ul>
+		</div>
+		<br>
+		<br>
+		<!--Indent Dropdown-->
+		<div class="btn-group">
+
+			<div class="btn btn-lg btn-primary" data-toggle="dropdown" href="../../components/#navbar"><div id="dropIndent">Sangría</div> &#9660; </div>
+
+
+			<ul class="dropdown-menu">
+				<button type="button" class="btn btn-link" onclick="changeIndent(1)">1 plaza</button><br>
+				<button type="button" class="btn btn-link" onclick="changeIndent(2)">2 plazas</button><br>
+				<button type="button" class="btn btn-link" onclick="changeIndent(3)">3 plazas</button><br>
+				<button type="button" class="btn btn-link" onclick="changeIndent(4)">4 plazas</button><br>
+				<button type="button" class="btn btn-link" onclick="changeIndent(5)">5 plazas</button><br>
+				<button type="button" class="btn btn-link" onclick="changeIndent(6)">6 plazas</button><br>
+
+				<!-- dropdown menu links -->
+			</ul>
+		</div>
+
+		<br>
+		<br>
+		<a onclick="changeHide('options', 'index')" href="#">&laquo; Volver a Codigo de Formato</a>
+
+
+	</div><!-- /.container -->
+
+	<div id="results"></div>
+</div><!-- /container -->
+
+
+<!-- Bootstrap core JavaScript
+	================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="../bootstrap-3.1.1-dist/assets/js/jquery.js"></script>
+<script src="../bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
+</body>
+</html>

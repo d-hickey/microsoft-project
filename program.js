@@ -92,6 +92,7 @@ function finishTabifier(code) {
         }
     }
     code = "<pre>" + code + "</pre>"
+    //document.getElementById("results").innerHTML = code;
     Office.context.document.setSelectedDataAsync(code, { coercionType: 'html' });
     //alert("tabifier ends");
     level=0;
